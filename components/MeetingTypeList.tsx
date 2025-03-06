@@ -1,7 +1,6 @@
 "use client";
-import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import HomeCard from "./HomeCard";
 import { useRouter } from "next/navigation";
 import MeetingModal from "./MeetingModal";
@@ -172,7 +171,7 @@ function MeetingTypeList() {
           placeholder="Meeting Link"
           className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0 rounded"
           // value={values.link}
-          onChange={(e) => setValues({ ...values, link: e.target.value})}
+          onChange={(e) => setValues({ ...values, link: e.target.value })}
         />
       </MeetingModal>
     </section>

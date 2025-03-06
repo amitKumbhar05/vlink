@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import { useGetCall } from "@/hooks/useGetCalls";
 import { Call, CallRecording } from "@stream-io/video-react-sdk";
@@ -71,8 +70,8 @@ function CallList({ type }: { type: "ended" | "upcoming" | "recording" }) {
           <MeetingCard
             key={index || uuidv4()}
             date={
-              meeting.state?.startsAt.toLocaleString() ||
-              meeting.start_time.toLocaleString()
+              (meeting as Call).state?.startsAt?.toLocaleString() ||
+              (meeting as CallRecording).start_time.toLocaleString()
             }
             icon={
               type === "recording"
@@ -83,7 +82,7 @@ function CallList({ type }: { type: "ended" | "upcoming" | "recording" }) {
             }
             title={
               (meeting as Call).state?.custom?.description?.substring(0, 20) ||
-              meeting?.filename?.substring(0, 26) ||
+              (meeting as CallRecording)?.filename?.substring(0, 26) ||
               "Personal meeting"
             }
             isPreviousMeeting={type === "ended"}
@@ -91,13 +90,15 @@ function CallList({ type }: { type: "ended" | "upcoming" | "recording" }) {
             buttonText={type === "recording" ? "Play" : "Start"}
             link={
               type === "recording"
-                ? meeting.url
-                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${meeting.id}`
+                ? (meeting as CallRecording).url
+                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${
+                    (meeting as Call).id
+                  }`
             }
             handleClick={
               type === "recording"
-                ? () => router.push(`${meeting.url}`)
-                : () => router.push(`/meeting/${meeting.id}`)
+                ? () => router.push(`${(meeting as CallRecording).url}`)
+                : () => router.push(`/meeting/${(meeting as Call).id}`)
             }
           />
         ))

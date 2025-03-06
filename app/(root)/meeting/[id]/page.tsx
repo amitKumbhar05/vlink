@@ -4,11 +4,7 @@ import MeetingRoom from "@/components/MeetingRoom";
 import MeetingSetup from "@/components/MeetingSetup";
 import { useGetCallById } from "@/hooks/useGetCallById";
 import { useUser } from "@clerk/nextjs";
-import {
-  StreamCall,
-  StreamTheme,
-  StreamVideo,
-} from "@stream-io/video-react-sdk";
+import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -18,7 +14,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   // hooks
   // const { id } = await params;
-  const { user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
   const { call, isCallLoading } = useGetCallById(callId);
 
   // useEffect
@@ -41,7 +37,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     <main>
       <StreamCall call={call}>
         <StreamTheme>
-          {!isSetupCompleted ? <MeetingSetup setIsSetupCompleted={setIsSetupCompleted} /> : <MeetingRoom />}
+          {!isSetupCompleted ? (
+            <MeetingSetup setIsSetupCompleted={setIsSetupCompleted} />
+          ) : (
+            <MeetingRoom />
+          )}
         </StreamTheme>
       </StreamCall>
     </main>
